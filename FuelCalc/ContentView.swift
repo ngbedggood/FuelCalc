@@ -64,7 +64,7 @@ struct ContentView: View {
         if (!isKilometers) {
             tempDistance *= 1.60934
         }
-        var result = (tempVolume / tempDistance) * 100
+        let result = (tempVolume / tempDistance) * 100
         return isMetricResult ? result : result * 2.352
         
     }
