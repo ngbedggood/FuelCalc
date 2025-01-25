@@ -30,7 +30,8 @@ struct ContentView: View {
                 } label: {
                     Text(isLitres ? "L" : "Gal")
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(CustomButton())
+                .frame(width: 50, height: 32)
             }
             .padding()
             HStack {
@@ -41,7 +42,8 @@ struct ContentView: View {
                 } label: {
                     Text(isKilometers ? "Km" : "Miles")
                 }
-                .buttonStyle(.borderedProminent)
+                .buttonStyle(CustomButton())
+                .frame(width: 50, height: 32)
             }
             .padding()
             Text("\(calcResult(fuelVolume: fuelVolume, distance: distance))")
@@ -50,7 +52,8 @@ struct ContentView: View {
             } label: {
                 Text(isMetricResult ? "L / 100km" : "MPG")
             }
-            .buttonStyle(.borderedProminent)
+            .buttonStyle(CustomButton())
+            .frame(width: 100, height: 32)
         }
         .padding()
     }
@@ -65,7 +68,7 @@ struct ContentView: View {
             tempDistance *= 1.60934
         }
         let result = (tempVolume / tempDistance) * 100
-        return isMetricResult ? result : result * 2.352
+        return isMetricResult ? result : 235.2145 / result
         
     }
     
