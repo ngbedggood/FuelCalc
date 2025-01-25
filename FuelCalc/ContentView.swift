@@ -29,12 +29,13 @@ struct ContentView: View {
                 HStack {
                     TextField("Volume", value: $fuelVolume, format: .number)
                         .textFieldStyle(.roundedBorder)
+                        .keyboardType(.decimalPad)
                     Button() {
                         isLitres.toggle()
                     } label: {
                         Text(isLitres ? "L" : "Gal")
                     }
-                    .buttonStyle(CustomButton())
+                    .buttonStyle(CustomButton(buttonColor: .blue))
                     .frame(width: 60, height: 32)
                 }
             }
@@ -46,29 +47,42 @@ struct ContentView: View {
                 HStack {
                     TextField("Distance", value: $distance, format: .number)
                         .textFieldStyle(.roundedBorder)
+                        .keyboardType(.decimalPad)
                     Button() {
                         isKilometers.toggle()
                     } label: {
                         Text(isKilometers ? "Km" : "Miles")
                     }
-                    .buttonStyle(CustomButton())
+                    .buttonStyle(CustomButton(buttonColor: .blue))
                     .frame(width: 60, height: 32)
                 }
             }
             .padding()
             
-            VStack {
-                Text("\(calcResult(fuelVolume: fuelVolume, distance: distance))")
+            HStack {
+                Text("\(calcResult(fuelVolume: fuelVolume, distance: distance), specifier: "%.2f")")
                     .font(.title)
+                    .frame(width: 100)
                 Button() {
                     isMetricResult.toggle()
                 } label: {
                     Text(isMetricResult ? "L / 100km" : "MPG")
                 }
-                .buttonStyle(CustomButton())
+                .buttonStyle(CustomButton(buttonColor: .blue))
                 .frame(width: 100, height: 32)
             }
             .padding(.top, 50)
+            
+            Button() {
+                
+            } label: {
+                Text("Save Trip")
+            }
+            .buttonStyle(CustomButton(buttonColor: .gray))
+            .frame(width: 100, height: 32)
+            .padding()
+            
+            
         }
         .padding()
     }
