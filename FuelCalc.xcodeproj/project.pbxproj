@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		43784ECB2D456B2700FFE0D7 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 43784ECA2D456B2700FFE0D7 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		43784EA92D45592500FFE0D7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		43784E982D45592400FFE0D7 /* FuelCalc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FuelCalc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		43784EA82D45592500FFE0D7 /* FuelCalcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FuelCalcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		43784EB22D45592500FFE0D7 /* FuelCalcUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FuelCalcUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		43784ECA2D456B2700FFE0D7 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		43784E8F2D45592400FFE0D7 = {
 			isa = PBXGroup;
 			children = (
+				43784ECA2D456B2700FFE0D7 /* .gitignore */,
 				43784E9A2D45592400FFE0D7 /* FuelCalc */,
 				43784EAB2D45592500FFE0D7 /* FuelCalcTests */,
 				43784EB52D45592500FFE0D7 /* FuelCalcUITests */,
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43784ECB2D456B2700FFE0D7 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
