@@ -10,7 +10,7 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) var context
-    @Query var trips: [Trip]
+    @Query(sort: \Trip.date, order: .reverse) var trips: [Trip]
     
     @FocusState var isInputActive: Bool
     
@@ -26,7 +26,8 @@ struct ContentView: View {
         VStack {
             Text("Fuel Economy Calculator")
                 .font(.title)
-                .padding(.bottom, 50)
+                .fontWeight(.bold)
+                .padding(.bottom, 32)
             
             VStack {
                 Text("How much fuel did you use?")
@@ -36,16 +37,18 @@ struct ContentView: View {
                         .textFieldStyle(.roundedBorder)
                         .keyboardType(.decimalPad)
                         .focused($isInputActive)
+                        .font(.title)
+                        .frame(width: 140)
                     Button() {
                         isLitres.toggle()
                     } label: {
                         Text(isLitres ? "L" : "Gal")
                     }
                     .buttonStyle(CustomButton(buttonColor: .blue))
-                    .frame(width: 60, height: 32)
+                    .frame(width: 60, height: 40)
                 }
             }
-            .padding()
+            .padding(8)
             
             VStack {
                 Text("How far did you travel?")
@@ -55,16 +58,18 @@ struct ContentView: View {
                         .textFieldStyle(.roundedBorder)
                         .keyboardType(.decimalPad)
                         .focused($isInputActive)
+                        .font(.title)
+                        .frame(width: 140)
                     Button() {
                         isKilometers.toggle()
                     } label: {
                         Text(isKilometers ? "Km" : "Miles")
                     }
                     .buttonStyle(CustomButton(buttonColor: .blue))
-                    .frame(width: 60, height: 32)
+                    .frame(width: 60, height: 40)
                 }
             }
-            .padding()
+            .padding(8)
             
             HStack {
                 let tempResult = calcResult(fuelVolume: fuelVolume, distance: distance)
@@ -77,14 +82,14 @@ struct ContentView: View {
                     Text(isMetricResult ? "L / 100km" : "MPG")
                 }
                 .buttonStyle(CustomButton(buttonColor: .blue))
-                .frame(width: 100, height: 32)
+                .frame(width: 100, height: 40)
             }
-            .padding(.top, 50)
+            .padding(.top, 32)
             
             Button() {
                 context.insert(Trip(
-                    fuelVolume: fuelVolume,
-                    distance: distance,
+                    fuelVolume: isLitres ? fuelVolume : fuelVolume * 3.78541,
+                    distance: isKilometers ? distance : distance * 1.60934,
                     economy: calcResult(fuelVolume: fuelVolume, distance: distance),
                     date: Date.now
                 ))
@@ -103,35 +108,30 @@ struct ContentView: View {
                 Text("Save Trip")
             }
             .buttonStyle(CustomButton(buttonColor: .gray))
-            .frame(width: 100, height: 32)
+            .frame(width: 100, height: 40)
             .padding()
             
-            //List {
-                Grid {
+            Grid(alignment: .center) {
+                GridRow {
+                    Text("Fuel")
+                    Text("Distance")
+                    Text("Economy")
+                    Text("Date")
+                }
+                .bold()
+                Divider()
+                ForEach(trips, id: \.id) { trip in
                     GridRow {
-                        Text("Fuel")
-                        Text("Distance")
-                        Text("Economy")
-                        Text("Date")
+                        Text("\(isMetricResult ? trip.fuelVolume : trip.fuelVolume / 3.78541, specifier: "%.2f")")
+                        Text("\(isMetricResult ? trip.distance : trip.distance / 1.60934, specifier: "%.2f")")
+                        Text("\(isMetricResult ? trip.economy : 235.2145 / trip.economy, specifier: "%.2f")")
+                        Text("\(trip.date.formatted(date: .numeric, time: .omitted))")
                     }
-                    .bold()
-                    Divider()
-                    ForEach(trips, id: \.id) { trip in
-                        GridRow {
-                            Text("\(isMetricResult ? trip.fuelVolume : trip.fuelVolume / 3.78541, specifier: "%.2f")")
-                            Text("\(isMetricResult ? trip.distance : trip.distance / 1.60934, specifier: "%.2f")")
-                            Text("\(isMetricResult ? trip.economy : 235.2145 / trip.economy, specifier: "%.2f")")
-                            Text("\(trip.date.formatted(date: .numeric, time: .omitted))")
-                        }
-                        if trip != trips.last {
-                            Divider()
-                        }
+                    if trip != trips.last {
+                        Divider()
                     }
                 }
-            //}
-            //.scrollDisabled(true)
-            //.font(.subheadline)
-            
+            }
         }
         .padding()
         .toolbar {
@@ -143,7 +143,7 @@ struct ContentView: View {
         }
     }
     
-    func calcResult(fuelVolume: Float, distance: Float) -> Float {
+    private func calcResult(fuelVolume: Float, distance: Float) -> Float {
         var tempVolume = fuelVolume
         var tempDistance = distance
         if (!isLitres) {
@@ -168,7 +168,6 @@ struct ContentView: View {
                 }
             }
         }
-    
     
 }
 
