@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct FuelCalcApp: App {
@@ -13,5 +14,6 @@ struct FuelCalcApp: App {
         WindowGroup {
             ContentView()
         }
+        .modelContainer(for: Trip.self)
     }
 }
