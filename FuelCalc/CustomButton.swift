@@ -16,14 +16,14 @@ struct CustomButton: ButtonStyle {
             
             let offset: CGFloat = 5
             
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 8)
                 .foregroundColor(buttonColor)
                 .brightness(-0.3)
                 .offset(y: offset)
             
-            RoundedRectangle(cornerRadius: 6)
+            RoundedRectangle(cornerRadius: 8)
                 .foregroundColor(buttonColor)
-                .offset(y: configuration.isPressed ? offset: 0)
+                .offset(y: configuration.isPressed ? offset : 0)
             
             configuration.label
                 .offset(y: configuration.isPressed ? offset : 0)

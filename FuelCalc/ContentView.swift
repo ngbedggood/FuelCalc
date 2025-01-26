@@ -14,8 +14,8 @@ struct ContentView: View {
     
     @FocusState var isInputActive: Bool
     
-    @State private var fuelVolume: Float = 49.77
-    @State private var distance: Float = 524.0
+    @State private var fuelVolume: Float = 1
+    @State private var distance: Float = 100
     @State private var isLitres: Bool = true
     @State private var isKilometers: Bool = true
     
@@ -25,27 +25,47 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Text("Fuel Economy Calculator")
+                .frame(maxWidth: .infinity, maxHeight: 50)
+                .background(.gray)
                 .font(.title)
                 .fontWeight(.bold)
-                .padding(.bottom, 32)
+                .padding([.top, .bottom], 16)
+                .foregroundColor(.white)
             
             VStack {
                 Text("How much fuel did you use?")
                     .font(.subheadline)
+                    .foregroundColor(.white)
                 HStack {
                     TextField("Volume", value: $fuelVolume, format: .number)
-                        .textFieldStyle(.roundedBorder)
                         .keyboardType(.decimalPad)
+                        .multilineTextAlignment(.trailing)
+                        .padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
+                        .background(.gray)
+                        .cornerRadius(8)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("darkGray"), lineWidth:2))
+                        .foregroundStyle(.white)
                         .focused($isInputActive)
                         .font(.title)
-                        .frame(width: 140)
-                    Button() {
+                        .frame(width: 130)
+                        .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                                // Click to select all the text.
+                                if let textField = obj.object as? UITextField {
+                                    textField.selectAll(nil)
+                                }
+                            }
+                    /*Button() {
                         isLitres.toggle()
                     } label: {
                         Text(isLitres ? "L" : "Gal")
                     }
                     .buttonStyle(CustomButton(buttonColor: .blue))
-                    .frame(width: 60, height: 40)
+                    .frame(width: 60, height: 33)
+                    .offset(y: -3)
+                    */
+                    Toggle("Fuel", isOn: $isLitres)
+                        .toggleStyle(CustomToggle(firstLabel: "Litres", secondLabel: "Gallons"))
+                        .offset(y: -2)
                 }
             }
             .padding(8)
@@ -53,20 +73,37 @@ struct ContentView: View {
             VStack {
                 Text("How far did you travel?")
                     .font(.subheadline)
+                    .foregroundColor(.white)
                 HStack {
                     TextField("Distance", value: $distance, format: .number)
-                        .textFieldStyle(.roundedBorder)
                         .keyboardType(.decimalPad)
+                        .multilineTextAlignment(.trailing)
+                        .padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
+                        .background(.gray)
+                        .cornerRadius(8)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("darkGray"), lineWidth:2))
+                        .foregroundStyle(.white)
                         .focused($isInputActive)
                         .font(.title)
-                        .frame(width: 140)
-                    Button() {
+                        .frame(width: 130)
+                        .onReceive(NotificationCenter.default.publisher(for: UITextField.textDidBeginEditingNotification)) { obj in
+                                // Click to select all the text.
+                                if let textField = obj.object as? UITextField {
+                                    textField.selectAll(nil)
+                                }
+                            }
+                    /*Button() {
                         isKilometers.toggle()
                     } label: {
                         Text(isKilometers ? "Km" : "Miles")
                     }
                     .buttonStyle(CustomButton(buttonColor: .blue))
-                    .frame(width: 60, height: 40)
+                    .frame(width: 60, height: 33)
+                    .offset(y: -3)
+                     */
+                    Toggle("Distance", isOn: $isKilometers)
+                        .toggleStyle(CustomToggle(firstLabel: "Km", secondLabel: "Miles"))
+                        .offset(y: -2)
                 }
             }
             .padding(8)
@@ -76,14 +113,21 @@ struct ContentView: View {
                 Text("\(isMetricResult ? tempResult : 235.2145/tempResult, specifier: "%.2f")")
                     .font(.title)
                     .frame(width: 100)
-                Button() {
+                
+                /*Button() {
                     isMetricResult.toggle()
                 } label: {
                     Text(isMetricResult ? "L / 100km" : "MPG")
                 }
                 .buttonStyle(CustomButton(buttonColor: .blue))
-                .frame(width: 100, height: 40)
+                .frame(width: 100, height: 33)
+                .offset(y: -3)
+                 */
+                Toggle("Economy", isOn: $isMetricResult)
+                    .toggleStyle(CustomToggle(firstLabel: "L/100Km", secondLabel: "MPG"))
+                    .offset(y: -2)
             }
+            .foregroundColor(.white)
             .padding(.top, 32)
             
             Button() {
@@ -108,7 +152,7 @@ struct ContentView: View {
                 Text("Save Trip")
             }
             .buttonStyle(CustomButton(buttonColor: .gray))
-            .frame(width: 100, height: 40)
+            .frame(width: 100, height: 33)
             .padding()
             
             Grid(alignment: .center) {
@@ -132,8 +176,10 @@ struct ContentView: View {
                     }
                 }
             }
+            .padding()
+            .foregroundColor(.white)
+            Spacer()
         }
-        .padding()
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Button("Done") {
@@ -141,6 +187,7 @@ struct ContentView: View {
                 }
             }
         }
+        .background(Color("appColor"))
     }
     
     private func calcResult(fuelVolume: Float, distance: Float) -> Float {
