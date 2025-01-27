@@ -22,7 +22,7 @@ struct CustomToggle: ToggleStyle {
             .stroke(.darkGray, lineWidth: 4)
             .fill(.gray)//.brightness(-0.2)
             .frame(width: width, height: 33)
-            .offset(y:3)
+            .offset(y:2)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(.gray)

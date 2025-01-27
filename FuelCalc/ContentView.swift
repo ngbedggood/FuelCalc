@@ -115,12 +115,14 @@ struct ContentView: View {
                 .padding(.top, 32)
                 
                 Button() {
-                    context.insert(Trip(
-                        fuelVolume: isLitres ? fuelVolume : fuelVolume * 3.78541,
-                        distance: isKilometers ? distance : distance * 1.60934,
-                        economy: calcResult(fuelVolume: fuelVolume, distance: distance),
-                        date: Date.now
-                    ))
+                    if (calcResult(fuelVolume: fuelVolume, distance: distance).isFinite) {
+                        context.insert(Trip(
+                            fuelVolume: isLitres ? fuelVolume : fuelVolume * 3.78541,
+                            distance: isKilometers ? distance : distance * 1.60934,
+                            economy: calcResult(fuelVolume: fuelVolume, distance: distance),
+                            date: Date.now
+                        ))
+                    }
                     if (trips.count > 8) {
                         if (trips.last != nil) {
                             let trip = trips.last
