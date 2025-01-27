@@ -11,34 +11,38 @@ struct CustomToggle: ToggleStyle {
     
     let firstLabel: String
     let secondLabel: String
+    let width: CGFloat
     
     func makeBody(configuration: Configuration) -> some View {
+        
+        let quarter = width / 4
+        let half = width / 2
         
         RoundedRectangle(cornerRadius: 8)
             .stroke(.darkGray, lineWidth: 4)
             .fill(.gray)//.brightness(-0.2)
-            .frame(width: 160, height: 33)
+            .frame(width: width, height: 33)
             .offset(y:3)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(.gray)
-                    .frame(width: 160, height: 30)
+                    .frame(width: width, height: 30)
                     .offset(y: 4)
                     .overlay {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(.blue).brightness(-0.3)
-                            .frame(width: 84, height: 32)
-                            .offset(x: configuration.isOn ? -40 : 40, y: 5)
+                            .frame(width: half+4, height: 32)
+                            .offset(x: configuration.isOn ? -quarter : quarter, y: 5)
                         
                         RoundedRectangle(cornerRadius: 8)
                             .fill(.blue)
-                            .frame(width: 84, height: 32)
-                            .offset(x: configuration.isOn ? -40 : 40)
+                            .frame(width: half+4, height: 32)
+                            .offset(x: configuration.isOn ? -quarter : quarter)
                         Text("\(firstLabel)")
-                            .offset(x: -40)
+                            .offset(x: -quarter)
                             .foregroundColor(configuration.isOn ? .white : .darkGray)
                         Text("\(secondLabel)")
-                            .offset(x: 40)
+                            .offset(x: quarter)
                             .foregroundColor(configuration.isOn ? .darkGray : .white)
                     }
                     .onTapGesture {
@@ -54,5 +58,5 @@ struct CustomToggle: ToggleStyle {
 #Preview {
     
     Toggle("test", isOn: .constant(true))
-        .toggleStyle(CustomToggle(firstLabel: "Label 1", secondLabel: "Label 2"))
+        .toggleStyle(CustomToggle(firstLabel: "Label 1", secondLabel: "Label 2", width: 160))
 }
