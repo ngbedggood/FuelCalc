@@ -14,12 +14,12 @@ class Trip {
     var distance: Float
     var economy: Float
     var date: Date
-    
+
     init(fuelVolume: Float, distance: Float, economy: Float, date: Date) {
         self.fuelVolume = fuelVolume
         self.distance = distance
         self.economy = economy
         self.date = date
     }
-    
+
 }

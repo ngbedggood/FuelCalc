@@ -5,29 +5,26 @@
 //  Created by Nathaniel Bedggood on 25/01/2025.
 //
 
-import SwiftUI
-import SwiftData
 import Foundation
+import SwiftData
+import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) var context
     @Query(sort: \Trip.date, order: .reverse) var trips: [Trip]
-    
+
     var formatter = NumberFormatter()
-    
-    
+
     @FocusState var isInputActive: Bool
-    
+
     @State private var fuelVolume: Float = 0
     @State private var distance: Float = 0
     @State private var isLitres: Bool = true
     @State private var isKilometers: Bool = true
-    
+
     @State private var isMetricResult: Bool = true
     //@State private var result: Float
-    
-    
-    
+
     var body: some View {
         ScrollView {
             VStack {
@@ -38,7 +35,7 @@ struct ContentView: View {
                     .fontWeight(.bold)
                     .padding([.top, .bottom], 16)
                     .foregroundColor(.white)
-                
+
                 VStack {
                     Text("How much fuel did you use?")
                         .font(.subheadline)
@@ -48,28 +45,40 @@ struct ContentView: View {
                             TextField("", value: $fuelVolume, format: .number)
                                 .frame(height: 33)
                                 .keyboardType(.decimalPad)
-                                .padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
+                                .padding(
+                                    EdgeInsets(
+                                        top: 0, leading: 6, bottom: 0,
+                                        trailing: 6)
+                                )
                                 .background(.gray)
                                 .cornerRadius(8)
-                                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("darkGray"), lineWidth:2))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8).stroke(
+                                        Color("darkGray"), lineWidth: 2)
+                                )
                                 .foregroundStyle(.clear)
                                 .accentColor(.clear)
                                 .frame(width: 130)
                                 .focused($isInputActive)
-                                .simultaneousGesture(TapGesture().onEnded {
-                                    fuelVolume = 0.0
-                                })
+                                .simultaneousGesture(
+                                    TapGesture().onEnded {
+                                        fuelVolume = 0.0
+                                    })
                             Text("\(NSString(format: "%.2f",fuelVolume))")
                                 .foregroundStyle(.white)
                                 .font(.title2)
                         }
                         Toggle("", isOn: $isLitres)
-                            .toggleStyle(CustomToggle(firstLabel: "Litres", secondLabel: "Gallons", width: 150))
+                            .toggleStyle(
+                                CustomToggle(
+                                    firstLabel: "Litres",
+                                    secondLabel: "Gallons", width: 150)
+                            )
                             .offset(y: -2)
                     }
                 }
                 .padding(8)
-                
+
                 VStack {
                     Text("How far did you travel?")
                         .font(.subheadline)
@@ -79,52 +88,77 @@ struct ContentView: View {
                             TextField("", value: $distance, format: .number)
                                 .frame(height: 33)
                                 .keyboardType(.decimalPad)
-                                .padding(EdgeInsets(top: 0, leading: 6, bottom: 0, trailing: 6))
+                                .padding(
+                                    EdgeInsets(
+                                        top: 0, leading: 6, bottom: 0,
+                                        trailing: 6)
+                                )
                                 .background(.gray)
                                 .cornerRadius(8)
-                                .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color("darkGray"), lineWidth:2))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8).stroke(
+                                        Color("darkGray"), lineWidth: 2)
+                                )
                                 .foregroundStyle(.clear)
                                 .accentColor(.clear)
                                 .frame(width: 130)
                                 .focused($isInputActive)
-                                .simultaneousGesture(TapGesture().onEnded {
-                                    distance = 0.0
-                                })
+                                .simultaneousGesture(
+                                    TapGesture().onEnded {
+                                        distance = 0.0
+                                    })
                             Text("\(NSString(format: "%.2f",distance))")
                                 .foregroundStyle(.white)
                                 .font(.title2)
                         }
                         Toggle("Distance", isOn: $isKilometers)
-                            .toggleStyle(CustomToggle(firstLabel: "Km", secondLabel: "Miles", width: 150))
+                            .toggleStyle(
+                                CustomToggle(
+                                    firstLabel: "Km", secondLabel: "Miles",
+                                    width: 150)
+                            )
                             .offset(y: -2)
                     }
                 }
                 .padding(8)
-                
+
                 HStack {
-                    let tempResult = calcResult(fuelVolume: fuelVolume, distance: distance)
-                    Text("\(isMetricResult ? tempResult : 235.2145/tempResult, specifier: "%.2f")")
-                        .font(.title)
-                        .frame(width: 100)
+                    let tempResult = calcResult(
+                        fuelVolume: fuelVolume, distance: distance)
+                    Text(
+                        "\(isMetricResult ? tempResult : 235.2145/tempResult, specifier: "%.2f")"
+                    )
+                    .font(.title)
+                    .frame(width: 100)
 
                     Toggle("Economy", isOn: $isMetricResult)
-                        .toggleStyle(CustomToggle(firstLabel: "L/100Km", secondLabel: "MPG", width: 180))
+                        .toggleStyle(
+                            CustomToggle(
+                                firstLabel: "L/100Km", secondLabel: "MPG",
+                                width: 180)
+                        )
                         .offset(y: -2)
                 }
                 .foregroundColor(.white)
                 .padding(.top, 32)
-                
-                Button() {
-                    if (calcResult(fuelVolume: fuelVolume, distance: distance).isFinite) {
-                        context.insert(Trip(
-                            fuelVolume: isLitres ? fuelVolume : fuelVolume * 3.78541,
-                            distance: isKilometers ? distance : distance * 1.60934,
-                            economy: calcResult(fuelVolume: fuelVolume, distance: distance),
-                            date: Date.now
-                        ))
+
+                Button {
+                    if calcResult(fuelVolume: fuelVolume, distance: distance)
+                        .isFinite
+                    {
+                        context.insert(
+                            Trip(
+                                fuelVolume: isLitres
+                                    ? fuelVolume : fuelVolume * 3.78541,
+                                distance: isKilometers
+                                    ? distance : distance * 1.60934,
+                                economy: calcResult(
+                                    fuelVolume: fuelVolume, distance: distance),
+                                date: Date.now
+                            ))
                     }
-                    if (trips.count > 8) {
-                        if (trips.last != nil) {
+                    if trips.count > 8 {
+                        if trips.last != nil {
                             let trip = trips.last
                             context.delete(trip!)
                             do {
@@ -140,7 +174,7 @@ struct ContentView: View {
                 .buttonStyle(CustomButton(buttonColor: .gray))
                 .frame(width: 100, height: 33)
                 .padding()
-                
+
                 Grid(horizontalSpacing: 20) {
                     GridRow {
                         Text("Fuel")
@@ -152,10 +186,18 @@ struct ContentView: View {
                     Divider()
                     ForEach(trips, id: \.id) { trip in
                         GridRow {
-                            Text("\(isMetricResult ? trip.fuelVolume : trip.fuelVolume / 3.78541, specifier: "%.2f")")
-                            Text("\(isMetricResult ? trip.distance : trip.distance / 1.60934, specifier: "%.2f")")
-                            Text("\(isMetricResult ? trip.economy : 235.2145 / trip.economy, specifier: "%.2f")")
-                            Text("\(trip.date.formatted(date: .numeric, time: .omitted))")
+                            Text(
+                                "\(isMetricResult ? trip.fuelVolume : trip.fuelVolume / 3.78541, specifier: "%.2f")"
+                            )
+                            Text(
+                                "\(isMetricResult ? trip.distance : trip.distance / 1.60934, specifier: "%.2f")"
+                            )
+                            Text(
+                                "\(isMetricResult ? trip.economy : 235.2145 / trip.economy, specifier: "%.2f")"
+                            )
+                            Text(
+                                "\(trip.date.formatted(date: .numeric, time: .omitted))"
+                            )
                         }
                         if trip != trips.last {
                             Divider()
@@ -177,21 +219,21 @@ struct ContentView: View {
         .background(Color("appColor"))
         .scrollDisabled(true)
     }
-    
+
     private func calcResult(fuelVolume: Float, distance: Float) -> Float {
         var tempVolume = fuelVolume
         var tempDistance = distance
-        if (!isLitres) {
+        if !isLitres {
             tempVolume *= 3.78541
         }
-        if (!isKilometers) {
+        if !isKilometers {
             tempDistance *= 1.60934
         }
         //let tempResult = (tempVolume / tempDistance) * 100
-        return tempVolume / tempDistance * 100//isMetricResult ? tempResult : 235.2145 / tempResult
-        
+        return tempVolume / tempDistance * 100  //isMetricResult ? tempResult : 235.2145 / tempResult
+
     }
-    
+
     private func deleteTrip(indexSet: IndexSet) {
         indexSet.forEach { index in
             let trip = trips[index]
@@ -203,7 +245,7 @@ struct ContentView: View {
             }
         }
     }
-    
+
 }
 
 #Preview {
