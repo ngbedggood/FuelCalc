@@ -15,8 +15,9 @@ struct CustomToggle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         
         RoundedRectangle(cornerRadius: 8)
+            .stroke(.darkGray, lineWidth: 4)
             .fill(.gray)//.brightness(-0.2)
-            .frame(width: 160, height: 36)
+            .frame(width: 160, height: 33)
             .offset(y:3)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
@@ -26,12 +27,12 @@ struct CustomToggle: ToggleStyle {
                     .overlay {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(.blue).brightness(-0.3)
-                            .frame(width: 80, height: 32)
+                            .frame(width: 84, height: 32)
                             .offset(x: configuration.isOn ? -40 : 40, y: 5)
                         
                         RoundedRectangle(cornerRadius: 8)
                             .fill(.blue)
-                            .frame(width: 80, height: 32)
+                            .frame(width: 84, height: 32)
                             .offset(x: configuration.isOn ? -40 : 40)
                         Text("\(firstLabel)")
                             .offset(x: -40)
