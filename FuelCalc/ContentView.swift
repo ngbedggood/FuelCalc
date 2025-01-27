@@ -64,7 +64,7 @@ struct ContentView: View {
                                 .font(.title2)
                         }
                         Toggle("", isOn: $isLitres)
-                            .toggleStyle(CustomToggle(firstLabel: "Litres", secondLabel: "Gallons"))
+                            .toggleStyle(CustomToggle(firstLabel: "Litres", secondLabel: "Gallons", width: 150))
                             .offset(y: -2)
                     }
                 }
@@ -95,7 +95,7 @@ struct ContentView: View {
                                 .font(.title2)
                         }
                         Toggle("Distance", isOn: $isKilometers)
-                            .toggleStyle(CustomToggle(firstLabel: "Km", secondLabel: "Miles"))
+                            .toggleStyle(CustomToggle(firstLabel: "Km", secondLabel: "Miles", width: 150))
                             .offset(y: -2)
                     }
                 }
@@ -108,7 +108,7 @@ struct ContentView: View {
                         .frame(width: 100)
 
                     Toggle("Economy", isOn: $isMetricResult)
-                        .toggleStyle(CustomToggle(firstLabel: "L/100Km", secondLabel: "MPG"))
+                        .toggleStyle(CustomToggle(firstLabel: "L/100Km", secondLabel: "MPG", width: 180))
                         .offset(y: -2)
                 }
                 .foregroundColor(.white)
